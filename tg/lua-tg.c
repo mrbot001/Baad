@@ -722,6 +722,7 @@ enum lua_query_type {
   lq_channel_invite_user,
   lq_channel_kick_user,
   lq_channel_set_admin,
+  lq_channel_set_unadmin,
   lq_channel_get_admins,
   lq_channel_get_users,
   lq_channel_set_about
@@ -1409,6 +1410,10 @@ void lua_do_all (void) {
       tgl_do_channel_set_admin (TLS, lua_ptr[p + 1].peer_id, lua_ptr[p + 2].peer_id, 2, lua_empty_cb, lua_ptr[p].ptr);
       p += 3;
       break;
+    case lq_channel_set_unadmin:
+      tgl_do_channel_set_admin (TLS, lua_ptr[p + 1].peer_id, lua_ptr[p + 2].peer_id, 0, lua_empty_cb, lua_ptr[p].ptr);
+      p += 3;
+      break;
     case lq_channel_get_admins:
       tgl_do_channel_get_members (TLS, lua_ptr[p + 1].peer_id, 100, 0, 1, lua_contact_list_cb, lua_ptr[p].ptr);
       p += 2;
@@ -1528,6 +1533,7 @@ struct lua_function functions[] = {
   {"channel_invite_user", lq_channel_invite_user, { lfp_channel, lfp_user, lfp_none }},
   {"channel_kick_user", lq_channel_kick_user, { lfp_channel, lfp_user, lfp_none }},
   {"channel_set_admin", lq_channel_set_admin, { lfp_channel, lfp_user,lfp_none }},
+  {"channel_set_unadmin", lq_channel_set_unadmin, { lfp_channel, lfp_user,lfp_none }},
   {"channel_get_admins", lq_channel_get_admins, { lfp_channel, lfp_none }},
   {"channel_get_users", lq_channel_get_users, { lfp_channel, lfp_none }},
   {"channel_set_about", lq_channel_set_about, { lfp_channel, lfp_string, lfp_none }},
